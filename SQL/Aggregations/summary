@@ -1,0 +1,37 @@
+/* 
+MYSQL
+*/
+SELECT COUNT(number), SUM(number), AVG(number), MAX(number), MIN(number), ROUND(number, decimals), 
+FLOOR(number), CEIL(number), CEILING(), TRUNCATE()
+
+
+FLOOR(): rounds the decimal DOWN to the closest integer.  FLOOR(25.9) = 25
+CEIL(): rounds the decimal UP to the closest integer.     CEIL(25.2) = 26
+CEILING(): 
+TRUNCATE(number, decimals): truncates a number to the specified number of decimals.  TRUNCATE(135.3750000, 2) = 135.37
+REPLACE(string,'char_to_replace','replace_with'): replaces a char in a string with another char (can work with numbers as well!). REPLACE(Salary,'0','') = replace all the 0 with nothing (=removes all 0's)
+ABS() function returns the absolute value of a given value.
+SQRT( number ): returns the square root of a number.
+POWER(base_number, exponent): returns the value of a number raised to the power of another number.
+
+BEST PRACTICES
+
+- Find largest/smallest values
+Using GROUP BY column ASC and LIMIT 1, will allow to select the smallest value of the column
+SELECT column
+FROM table
+GROUP BY column ASC /*for min, or DESC for max */
+LIMIT 1
+
+- subqueries
+
+- row index (e.g. to compute median)
+
+
+CONDITIONS
+
+- BETWEEN CONDITION
+expression BETWEEN value1 AND value2;
+SELECT TRUNCATE(SUM(LAT_N),4)
+FROM STATION
+WHERE LAT_N BETWEEN 38.7880 AND 137.2345
