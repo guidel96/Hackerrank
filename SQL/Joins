@@ -1,0 +1,95 @@
+/*
+MySQL
+*/
+----------
+----------
+SELECT SUM(CITY.POPULATION)
+FROM CITY 
+JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE
+WHERE COUNTRY.CONTINENT='Asia';
+----------
+----------
+
+
+----------
+----------
+SELECT COUNTRY.Continent, FLOOR(AVG(CITY.Population))
+FROM CITY 
+JOIN COUNTRY ON CITY.COUNTRYCODE = COUNTRY.CODE
+GROUP BY COUNTRY.Continent;
+----------
+----------
+
+/*
+The Report:
+You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
+Grades contains the following data: Grade, Min_Grade and Max_Grade
+Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. Ketty doesn't want the NAMES of those students who received a grade lower than 8. 
+The report must be in descending order by grade -- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, 
+order those particular students by their name alphabetically. Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. 
+If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+*/
+SELECT 
+    (CASE 
+        WHEN Grades.Grade >= 8
+            THEN Students.Name
+            ELSE NULL
+    END) AS NAME, 
+    Grades.Grade AS GRADES, 
+    Students.Marks AS MARKS
+FROM Grades, Students
+WHERE Students.Marks BETWEEN Grades.Min_Mark AND Grades.Max_Mark
+ORDER BY GRADES DESC, NAME, MARKS ASC
+----------
+----------
+
+----------
+
+SELECT S.hacker_id, H.name
+FROM Submissions S
+    LEFT JOIN Challenges C
+    ON S.challenge_id = C.challenge_id
+        LEFT JOIN Difficulty D
+        ON C.difficulty_level = D.difficulty_level
+            LEFT JOIN Hackers H
+            ON  S.hacker_id = H.hacker_id
+WHERE S.score = D.score
+GROUP BY S.hacker_id, H.name
+HAVING COUNT(S.hacker_id) > 1 /* if a hacker has solved several challenges with max score, his hacker_id will show up several times in the table... */
+ORDER BY COUNT(S.hacker_id) DESC, S.hacker_id ASC
+
+/*
+1. Join Challenges table with the Difficulty table such that we now have a max score instead of just the difficulty level
+2.a. Then, join the Submission table with the (joined) Challenges table, such that we now have the max score that can be achieved for a specific challenge id, and can later compare with the actual score achieved at the submission (join on both challenge_id)
+2.b. Join Submissions with the Hackers table such that we can associate a name to the submission (join on both hacker_id's)
+3. Ensure that the score achieved in the submission is the max score, i.e. S.score = D.score
+4. Group by name, so that each for each challenge solved, the hacker_id will appear. Meaning that if a same hacker_id solves several challenges, the hacker_id will appear several times...
+5. Filter on the number of times the hacker_id appears (i.e. number of times the hacker has achieved max score)
+6. Order the results as asked: DESC Count of challenges with max score, ASC hacker_id
+*/
+
+/* Huge table containing all we need
+SELECT *
+FROM Submissions S
+    LEFT JOIN Challenges C
+    ON S.challenge_id = C.challenge_id
+        LEFT JOIN Difficulty D
+        ON C.difficulty_level = D.difficulty_level
+            LEFT JOIN Hackers H
+            ON  S.hacker_id = H.hacker_id
+*/
+
+
+-----
+/* Ollivander's Inventory: https://www.hackerrank.com/challenges/harry-potter-and-wands/problem?isFullScreen=true&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen&h_r=next-challenge&h_v=zen */
+
+SELECT W.id, P.age, W.coins_needed, W.power
+FROM Wands W
+    JOIN Wands_Property P ON W.code = P.code
+WHERE P.is_evil = 0
+    AND W.coins_needed IN (
+        SELECT MIN(W1.coins_needed) 
+        FROM Wands W1 JOIN Wands_Property P1 ON W1.code = P1.code
+        WHERE W1.power = W.power AND P1.age = P.age
+        )
+ORDER BY W.power DESC, P.age DESC
