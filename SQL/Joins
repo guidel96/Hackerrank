@@ -93,3 +93,29 @@ WHERE P.is_evil = 0
         WHERE W1.power = W.power AND P1.age = P.age
         )
 ORDER BY W.power DESC, P.age DESC
+
+----------
+----------
+Contest Leaderboard
+
+/*
+Enter your query here.
+The total score of a hacker is the sum of their maximum scores for all of the challenges 
+--> first create table with max score for each combination hacker_id, challenge_id. Name it aux_table
+--> second, for each hacker_id (=Group by hacker_id), compute the sum of these max scores
+--> third, make a join with the Hackers table such that we can display the hacker's name
+*/
+SELECT aux_table.hacker_id, H.name, SUM(aux_table.max_scores)
+FROM 
+    (SELECT S.hacker_id, MAX(S.score) AS max_scores
+    FROM Submissions S
+    WHERE S.score > 0
+    GROUP BY S.hacker_id, S.challenge_id
+    /* ORDER BY S.hacker_id DESC */
+    ) AS aux_table 
+    LEFT JOIN Hackers H ON aux_table.hacker_id = H.hacker_id
+GROUP BY aux_table.hacker_id, H.name
+ORDER BY SUM(aux_table.max_scores) DESC, aux_table.hacker_id ASC;
+
+----------
+----------
