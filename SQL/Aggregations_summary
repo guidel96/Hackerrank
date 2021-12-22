@@ -13,6 +13,9 @@ REPLACE(string,'char_to_replace','replace_with'): replaces a char in a string wi
 ABS() function returns the absolute value of a given value.
 SQRT( number ): returns the square root of a number.
 POWER(base_number, exponent): returns the value of a number raised to the power of another number.
+REPEAT(stringToRepeat, NumberOfRepeats): repeats a string as many times as specified.       
+E.g. SET @number = 21; SELECT REPEAT('* ', @number := @number - 1) from information_schema.tables; This will repeat a pattern a specific number of times, 
+each time printing on less '*' because we have the variable decremeting: @number:= @number -1
 
 BEST PRACTICES
 
