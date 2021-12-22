@@ -1,3 +1,25 @@
 /* MySQL */
+----------------------------
+----------------------------
+DRAW THE TRIANGLE
+
 set @number = 21;
 select repeat('* ', @number := @number - 1) from information_schema.tables;
+
+* * * * *
+* * * * 
+* * * 
+* * 
+* 
+----------------------------
+----------------------------
+DRAW THE TRIANGLE 2
+* 
+* * 
+* * * 
+* * * * 
+* * * * *
+SET @number = 0; /* Initialize the variable */
+SELECT REPEAT('* ', @number := @number + 1)
+FROM information_schema.tables /* Need any random table to execute the query */
+LIMIT 20; /*Stop after 5th line */
