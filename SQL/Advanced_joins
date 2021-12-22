@@ -1,0 +1,33 @@
+/* mySQL */
+-----------------------
+-----------------------
+/*
+Placements
+*/
+SELECT S.Name
+FROM Friends F JOIN Packages P ON F.ID = P.ID
+    LEFT JOIN Packages P2 ON F.Friend_ID = P2.ID /* displays the salary of the friend*/
+        LEFT JOIN Students S ON S.ID = F.ID /* to display the name */
+WHERE P.Salary < P2.Salary
+ORDER BY P2.Salary
+
+-----------------------
+-----------------------
+/* Symmetric Pairs */
+SELECT F.X, F.Y
+FROM Functions F
+    JOIN Functions F2 ON (F.X=F2.Y AND F.Y=F2.X)
+GROUP BY F.X, F.Y
+HAVING F.X < F.Y     /* if X < Y, keep only the pair (x,y) and remove (y,x)*/
+    OR COUNT(F.X)>1 /* if x=1, then we will need two identical pairs: (x,y) and (y,x)*/
+ORDER BY F.X ASC;
+
+-----------------------
+-----------------------
+
+-----------------------
+-----------------------
+
+-----------------------
+-----------------------
+
